@@ -1,6 +1,3 @@
-import unittest
-
-
 def part1(input_file):
     total = 0
     with open(input_file) as file:
