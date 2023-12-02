@@ -1,37 +1,31 @@
+import re
+
+
 def part1(input_file):
+    total = 0
     limits = {"red": 12, "green": 13, "blue": 14}
-    possible = []
     with open(input_file) as file:
-        for line in file.readlines():
-            impossible = False
-            id, data = line.strip("Game ").split(":")
-            rounds = [x.split(",") for x in data.split(";")]
-            for round in rounds:
-                for cube in round:
-                    n, name = cube.strip().split()
-                    if int(n) > limits[name]:
-                        impossible = True
+        for i, line in enumerate(file.readlines(), start=1):
+            if False not in map(
+                lambda m: int(m.group(1)) <= limits[m.group(2)],
+                re.finditer(r"(\d*) (blue|red|green)", line),
+            ):
+                total += i
 
-            if not impossible:
-                possible.append(int(id))
-
-    return sum(possible)
+    return total
 
 
 def part2(input_file):
     total = 0
     with open(input_file) as file:
         for line in file.readlines():
-            used = {"red": 0, "green": 0, "blue": 0}
-            id, data = line.strip("Game ").split(":")
-            rounds = [x.split(",") for x in data.split(";")]
-            for round in rounds:
-                for cube in round:
-                    n, name = cube.strip().split()
-                    n = int(n)
-                    if n > used[name]:
-                        used[name] = n
-            power = used["red"] * used["green"] * used["blue"]
+            power = 1
+            matches = re.findall(r"(\d*) (red|green|blue)", line)
+            for color in ["red", "green", "blue"]:
+                power *= max(
+                    [int(m[0]) for m in filter(lambda m: m[1] == color, matches)]
+                )
+
             total += power
 
     return total
