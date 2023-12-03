@@ -1,11 +1,6 @@
-def read_input(input_file):
-    with open(input_file) as file:
-        return file.readlines()
-
-
-def part1(input_file):
+def part1(input: str):
     total = 0
-    for line in read_input(input_file):
+    for line in input.split("\n"):
         val = ""
         for i, step in [(0, 1), (len(line) - 1, -1)]:
             while True:
@@ -20,7 +15,7 @@ def part1(input_file):
     return total
 
 
-def part2(input_file):
+def part2(input: str):
     num_strings = {
         "one": 1,
         "two": 2,
@@ -33,7 +28,7 @@ def part2(input_file):
         "nine": 9,
     }
     total = 0
-    for line in read_input(input_file):
+    for line in input.split("\n"):
         found = set()
         for s, v in num_strings.items():
             for i in [line.find(s), line.rfind(s)]:
